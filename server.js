@@ -12,6 +12,7 @@ app.use(cors());
 app.use(express.json());
 app.use(morgan());
 
+app.use("/api/v1/test/", require("./routes/testRoutes"));
 // Routes
 app.get("/", (req, res) => {
   return res.status(200).send("Welcome");
