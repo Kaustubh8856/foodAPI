@@ -1,4 +1,6 @@
 const userModel = require("../models/userModel");
+const bcrypt = require("bcryptjs");
+const JWT = require("jsonwebtoken");
 
 // Register controller
 const registerController = async (req, res) => {
@@ -19,13 +21,18 @@ const registerController = async (req, res) => {
         message: "Email already registered. Please Login",
       });
     }
+
+    // hashing password
+    var salt = bcrypt.genSaltSync(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
     // create new user is all above validations are done
     const user = await userModel.create({
       userName,
       email,
       phone,
       address,
-      password,
+      password: hashedPassword,
     });
     res.status(201).send({
       success: true,
@@ -53,16 +60,30 @@ const loginController = async (req, res) => {
       });
     }
     // checking if user is registered to login
-    const user = await userModel.findOne({ email: email, password: password });
+    const user = await userModel.findOne({ email });
     if (!user) {
       return res.status(404).send({
         success: false,
-        message: "User not found or wrong password",
+        message: "User not found.",
       });
     }
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(500).send({
+        success: false,
+        message: "Invalid Credentials.",
+      });
+    }
+    //  token
+    const token = JWT.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "7D",
+    });
+
+    // user.password = undefined  // this hides the password filed in the database
     res.status(200).send({
       success: true,
       message: "Login successful",
+      token,
     });
   } catch (error) {
     console.log(error);
