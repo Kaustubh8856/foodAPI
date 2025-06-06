@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, "password is required"],
     },
-    addredd: {
+    address: {
       type: Array,
     },
     phone: {
@@ -26,12 +26,12 @@ const userSchema = new mongoose.Schema(
     usertype: {
       type: String,
       required: [true, "usertype is required"],
-      dafault: "client",
+      default: "client",
       enum: ["client", "admin", "vendor", "driver"],
     },
     profile: {
       type: String,
-      defailt: "https://pixabay.com/images/search/user%20icon/",
+      default: "https://pixabay.com/images/search/user%20icon/",
     },
   },
   { timestamps: true }

@@ -15,7 +15,8 @@ app.use(cors());
 app.use(express.json());
 app.use(morgan());
 
-app.use("/api/v1/test/", require("./routes/testRoutes"));
+app.use("/api/v1/test", require("./routes/testRoutes"));
+app.use("/api/v1/auth", require("./routes/authRoutes"));
 // Routes
 app.get("/", (req, res) => {
   return res.status(200).send("Welcome");
