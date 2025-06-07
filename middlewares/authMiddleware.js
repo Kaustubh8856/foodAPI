@@ -17,7 +17,7 @@ module.exports = async (req, res, next) => {
         return res.status(401).send({
           success: false,
           message: "Unauthorized user",
-          error: err.message, // ✅ show real error message
+          error: err.message, // show real error message
         });
       } else {
         req.user = decode;
@@ -29,7 +29,7 @@ module.exports = async (req, res, next) => {
     res.status(500).send({
       success: false,
       message: "Error while verifying token",
-      error: error.message, // ✅ include message here too
+      error: error.message, // include message here too
     });
   }
 };

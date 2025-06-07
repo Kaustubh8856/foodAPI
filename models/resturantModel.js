@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 // schema
-const resturantSchema = new mongosse.Schema(
+const resturantSchema = new mongoose.Schema(
   {
     title: {
       type: String,
