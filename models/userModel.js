@@ -33,6 +33,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "https://pixabay.com/images/search/user%20icon/",
     },
+    answer: {
+      type: String,
+      required: [true, "Answer is required"],
+    },
   },
   { timestamps: true }
 );

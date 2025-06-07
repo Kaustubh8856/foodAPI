@@ -108,4 +108,46 @@ const updatePassword = async (req, res) => {
     });
   }
 };
-module.exports = { getUserController, updateUserController, updatePassword };
+
+// RESET PASSWORD CONTROLLER
+const resetPasswordController = async (req, res) => {
+  try {
+    const { email, newPass, answer } = req.body;
+    if (!email || !newPass || !answer) {
+      return res.status(500).send({
+        success: false,
+        message: "Please provide all fields",
+      });
+    }
+    const user = await userModel.findOne({ email, answer });
+    if (!user) {
+      return res.status(500).send({
+        success: false,
+        message: "Email not found or incorrect answer",
+      });
+    }
+    var salt = bcrypt.genSaltSync(10);
+    const hashedPassword = await bcrypt.hash(newPass, salt);
+    user.password = hashedPassword;
+    await user.save();
+    res.status(200).send({
+      success: true,
+      message: "Password reset successful",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({
+      success: false,
+      message: "Error in password reset API",
+      error: error,
+    });
+  }
+};
+
+// EXPORT
+module.exports = {
+  getUserController,
+  updateUserController,
+  updatePassword,
+  resetPasswordController,
+};
