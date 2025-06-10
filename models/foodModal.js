@@ -32,7 +32,7 @@ const foodSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
-    resturnat: {
+    resturant: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Resturant",
     },

@@ -13,7 +13,7 @@ connectDB();
 // Middlewares
 app.use(cors());
 app.use(express.json());
-app.use(morgan());
+app.use(morgan("combined"));
 
 app.use("/api/v1/test", require("./routes/testRoutes"));
 app.use("/api/v1/auth", require("./routes/authRoutes"));

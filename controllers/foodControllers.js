@@ -12,10 +12,10 @@ const createFoodController = async (req, res) => {
       catgeory,
       code,
       isAvailabe,
-      resturnat,
+      resturant,
       rating,
     } = req.body;
-    if (!title || !description || !price || !resturnat) {
+    if (!title || !description || !price || !resturant) {
       return res.status(500).send({
         success: false,
         message: "Please Provide all fields",
@@ -30,7 +30,7 @@ const createFoodController = async (req, res) => {
       catgeory,
       code,
       isAvailabe,
-      resturnat,
+      resturant,
       rating,
     });
 
@@ -107,9 +107,43 @@ const getFoodByIdCONTROLLER = async (req, res) => {
     });
   }
 };
+
+// GET FOOD BY RESTURANT ID CONTROLLER
+const getFoodByResturantController = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!id) {
+      return res.status(500).send({
+        success: false,
+        message: "Please provide resturant ID",
+      });
+    }
+    const foods = await foodModal.find({ resturant: id });
+    if (!foods) {
+      return res.stauts(500).send({
+        success: false,
+        message: "No foods found for this resturant.",
+      });
+    }
+    res.status(200).send({
+      success: true,
+      message: "Food items found",
+      Length: foods.length,
+      foods: foods,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({
+      success: false,
+      message: "Error in get food by resturant API!",
+      error,
+    });
+  }
+};
 // exports
 module.exports = {
   createFoodController,
   getAllFoodController,
   getFoodByIdCONTROLLER,
+  getFoodByResturantController,
 };
