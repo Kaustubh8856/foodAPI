@@ -140,10 +140,102 @@ const getFoodByResturantController = async (req, res) => {
     });
   }
 };
+
+// UPDATE FOOD BY ID CONTROLLER
+const updateFoodController = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!id) {
+      return res.status(500).send({
+        success: false,
+        message: "Please provide food id",
+      });
+    }
+    const food = await foodModal.findById(id);
+    if (!food) {
+      return res.status(404).send({
+        success: false,
+        message: "No food found with that id.",
+      });
+    }
+    const {
+      title,
+      description,
+      price,
+      imageUrl,
+      foodTags,
+      catgeory,
+      code,
+      isAvailabe,
+      resturant,
+      rating,
+    } = req.body;
+    const updatedFood = await foodModal.findByIdAndUpdate(
+      id,
+      {
+        title,
+        description,
+        price,
+        imageUrl,
+        foodTags,
+        catgeory,
+        code,
+        isAvailabe,
+        resturant,
+        rating,
+      },
+      { new: true }
+    );
+    res.status(200).send({
+      success: true,
+      message: "Food updated.",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({
+      success: false,
+      message: "Error in update food API",
+    });
+  }
+};
+
+// DELETE FOOD CONTROLLER
+const deleteFoodController = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!id) {
+      res.status(500).send({
+        success: false,
+        message: "Please provide food id",
+      });
+    }
+    const food = await foodModal.findById(id);
+    if (!food) {
+      res.status(404).send({
+        success: false,
+        message: "No food found with that id",
+      });
+    }
+    await foodModal.findByIdAndDelete(id);
+    res.status(200).send({
+      success: true,
+      message: "Food item deleted",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error in delete food API!",
+      error,
+    });
+  }
+};
 // exports
 module.exports = {
   createFoodController,
   getAllFoodController,
   getFoodByIdCONTROLLER,
   getFoodByResturantController,
+  updateFoodController,
+  deleteFoodController,
 };
