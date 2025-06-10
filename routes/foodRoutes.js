@@ -7,6 +7,7 @@ const {
   getFoodByResturantController,
   updateFoodController,
   deleteFoodController,
+  placeOrderController,
 } = require("../controllers/foodControllers");
 
 const router = express.Router();
@@ -29,5 +30,8 @@ router.put("/update/:id", authMiddleware, updateFoodController);
 
 // DELETE FOOD ROUTE
 router.delete("/delete/:id", authMiddleware, deleteFoodController);
+
+// PLACE ORDER ROUTE
+router.post("/placeOrder", authMiddleware, placeOrderController);
 // EXPORTS
 module.exports = router;
